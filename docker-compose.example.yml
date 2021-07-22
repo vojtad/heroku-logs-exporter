@@ -1,0 +1,8 @@
+version: '2'
+services:
+  heroku_logs_exporter:
+    build: .
+    container_name: heroku_logs_exporter
+    restart: unless-stopped
+    ports:
+      - 9841:9841

@@ -1,0 +1,19 @@
+version: '2'
+services:
+  heroku_logs_exporter:
+    build: .
+    container_name: heroku_logs_exporter
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.example.entryPoints=web,webSecure
+      - traefik.http.routers.example.rule=Host(`example.com`)
+      - traefik.http.routers.example.tls=true
+      - traefik.http.routers.example.tls.certresolver=lets-encrypt
+      - traefik.http.services.grafana.loadbalancer.server.port=9841
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
