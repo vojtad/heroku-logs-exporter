@@ -473,7 +473,7 @@ func processHerokuDyno(header *HerokuLogHeader, log string) {
     parts := strings.SplitN(log, " ", 3)
     errorCode := parts[1]
 
-    herokuErrorsTotal.WithLabelValues(header.Dyno, errorCode).Inc()
+    herokuErrorsTotal.WithLabelValues(header.AppName, header.Dyno, errorCode).Inc()
   } else {
     values := parseLogToMap(log)
     labels := []string{header.AppName, header.Dyno, values["source"]}
