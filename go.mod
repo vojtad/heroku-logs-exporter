@@ -1,4 +1,4 @@
-module github.com/vojtad/heroku-logs-exporter
+module heroku-logs-exporter
 
 go 1.16
 

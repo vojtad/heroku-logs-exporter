@@ -5,7 +5,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY *.go ./
+COPY *.go log/*.go metrics/*.go ./
 
 RUN go build -o /heroku-logs-exporter
 
