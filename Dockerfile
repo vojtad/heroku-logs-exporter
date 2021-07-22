@@ -9,4 +9,4 @@ COPY *.go ./
 
 RUN go build -o /heroku-logs-exporter
 
-CMD ["/heroku-logs-exporter"]
+ENTRYPOINT ["/heroku-logs-exporter"]
