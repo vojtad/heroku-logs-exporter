@@ -161,7 +161,7 @@ func NewHerokuPostgresMetrics() *HerokuPostgresMetrics {
 }
 
 func (m *HerokuPostgresMetrics) UpdateFromLog(log *herokuLog.HerokuLog) {
-	if log.Source != "heroku" || log.Dyno != "heroku-postgres" {
+	if log.Source != "app" || log.Dyno != "heroku-postgres" {
 		return
 	}
 

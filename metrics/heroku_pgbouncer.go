@@ -74,7 +74,7 @@ func NewHerokuPgbouncerMetrics() *HerokuPgbouncerMetrics {
 }
 
 func (m *HerokuPgbouncerMetrics) UpdateFromLog(log *herokuLog.HerokuLog) {
-	if log.Source != "heroku" || log.Dyno != "heroku-pgbouncer" {
+	if log.Source != "app" || log.Dyno != "heroku-pgbouncer" {
 		return
 	}
 
