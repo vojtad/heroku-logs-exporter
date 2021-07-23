@@ -36,7 +36,7 @@ func NewHerokuPgbouncerMetrics() *HerokuPgbouncerMetrics {
 			),
 			NewHerokuGaugeMetric(
 				"sample#server_idle",
-				"heroku_pgbouncer_metrica_server_idle_count",
+				"heroku_pgbouncer_metrics_server_idle_count",
 				"The number of server connections that are not currently assigned to a client connection.",
 				labels,
 				nil,
