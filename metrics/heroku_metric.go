@@ -24,6 +24,41 @@ func updateMetricsFromLog(metrics []HerokuMetric, labels []string, hLog *herokuL
 	}
 }
 
+func updateMetricFromLog(metrics []HerokuMetric, metricHerokuName string, labels []string, value string) {
+	for _, metric := range metrics {
+		if metric.HerokuName() == metricHerokuName {
+			metric.Update(value, labels);
+		}
+	}
+}
+
+type HerokuCounterMetric struct {
+	herokuName string
+	metric     *prometheus.CounterVec
+}
+
+func NewHerokuCounterMetric(herokuName string, prometheusName string, help string, labels []string) *HerokuCounterMetric {
+	m := new(HerokuCounterMetric)
+	m.herokuName = herokuName
+	m.metric = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: prometheusName,
+			Help: help,
+		},
+		labels,
+	)
+
+	return m
+}
+
+func (m HerokuCounterMetric) HerokuName() string {
+	return m.herokuName
+}
+
+func (m HerokuCounterMetric) Update(value string, labels []string) {
+	m.metric.WithLabelValues(labels...).Inc()
+}
+
 type HerokuGaugeMetric struct {
 	herokuName string
 	metric     *prometheus.GaugeVec

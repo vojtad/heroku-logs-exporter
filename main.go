@@ -23,6 +23,7 @@ var (
 
 var (
 	exportedMetrics = []metrics.HerokuMetricGroup{
+		metrics.NewHerokuSystemMetrics(),
 		metrics.NewHerokuRuntimeMetrics(),
 		metrics.NewHerokuPostgresMetrics(),
 		metrics.NewHerokuPgbouncerMetrics(),
