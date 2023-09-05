@@ -10,6 +10,7 @@ import (
 type HerokuMetric interface {
 	HerokuName() string
 	Update(value string, labels []string)
+	Delete(labels []string)
 }
 
 type HerokuMetricGroup interface {
@@ -24,10 +25,16 @@ func updateMetricsFromLog(metrics []HerokuMetric, labels []string, hLog *herokuL
 	}
 }
 
+func deleteMetrics(metrics []HerokuMetric, labels []string) {
+	for _, metric := range metrics {
+		metric.Delete(labels)
+	}
+}
+
 func updateMetricFromLog(metrics []HerokuMetric, metricHerokuName string, labels []string, value string) {
 	for _, metric := range metrics {
 		if metric.HerokuName() == metricHerokuName {
-			metric.Update(value, labels);
+			metric.Update(value, labels)
 		}
 	}
 }
@@ -57,6 +64,10 @@ func (m HerokuCounterMetric) HerokuName() string {
 
 func (m HerokuCounterMetric) Update(value string, labels []string) {
 	m.metric.WithLabelValues(labels...).Inc()
+}
+
+func (m HerokuCounterMetric) Delete(labels []string) {
+	m.metric.DeleteLabelValues(labels...)
 }
 
 type HerokuGaugeMetric struct {
@@ -91,6 +102,10 @@ func (m HerokuGaugeMetric) HerokuName() string {
 
 func (m HerokuGaugeMetric) Update(value string, labels []string) {
 	m.metric.WithLabelValues(labels...).Set(m.parser(value))
+}
+
+func (m HerokuGaugeMetric) Delete(labels []string) {
+	m.metric.DeleteLabelValues(labels...)
 }
 
 type HerokuSummaryMetric struct {
@@ -128,6 +143,10 @@ func (m HerokuSummaryMetric) Update(value string, labels []string) {
 	m.metric.WithLabelValues(labels...).Observe(m.parser(value))
 }
 
+func (m HerokuSummaryMetric) Delete(labels []string) {
+	m.metric.DeleteLabelValues(labels...)
+}
+
 type HerokuHistogramMetric struct {
 	herokuName string
 	metric     *prometheus.HistogramVec
@@ -135,7 +154,7 @@ type HerokuHistogramMetric struct {
 }
 
 func NewHerokuHistogramMetric(herokuName string, prometheusName string, help string, labels []string, buckets []float64, parser func(value string) float64) *HerokuHistogramMetric {
-	if (buckets == nil) {
+	if buckets == nil {
 		buckets = []float64{.005, .01, .02, 0.04, .06, .08, 0.1, .125, 0.15, 0.175, 0.2, 0.3, 0.4, .5, 1, 2.5, 5, 10, 15, 20}
 	}
 
@@ -165,4 +184,8 @@ func (m HerokuHistogramMetric) HerokuName() string {
 
 func (m HerokuHistogramMetric) Update(value string, labels []string) {
 	m.metric.WithLabelValues(labels...).Observe(m.parser(value))
+}
+
+func (m HerokuHistogramMetric) Delete(labels []string) {
+	m.metric.DeleteLabelValues(labels...)
 }

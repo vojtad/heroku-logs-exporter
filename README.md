@@ -1,6 +1,6 @@
 # `heroku-logs-exporter`
 
-Prometheus exporter for Heroku applications. Written in Go. It parses incming logs from [Heroku Log Drain](https://devcenter.heroku.com/articles/log-drains).
+Prometheus exporter for Heroku applications. Written in Go. It parses incoming logs from [Heroku Log Drain](https://devcenter.heroku.com/articles/log-drains).
 
 **This exporter is just a proof of concept and still being developed.**
 

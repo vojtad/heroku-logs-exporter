@@ -101,5 +101,14 @@ func (m *HerokuRuntimeMetrics) UpdateFromLog(log *herokuLog.HerokuLog) {
 	}
 
 	labels := []string{log.AppName, log.Dyno, log.ValueOrUnknown("source")}
+
+	if strings.HasPrefix(log.Line, "State changed") {
+		if strings.HasSuffix(log.Line, "to down") {
+			deleteMetrics(m.Metrics, labels)
+		}
+
+		return
+	}
+
 	updateMetricsFromLog(m.Metrics, labels, log)
 }
