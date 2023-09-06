@@ -55,10 +55,10 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 	count := 0
 	scanner := bufio.NewScanner(r.Body)
 	for scanner.Scan() {
-		logLine := herokuLog.ParseHerokuLog(appName, scanner.Text())
+		hLog := herokuLog.ParseHerokuLog(appName, scanner.Text())
 
 		for _, metric := range exportedMetrics {
-			metric.UpdateFromLog(logLine)
+			metric.UpdateFromLog(hLog)
 		}
 
 		count = count + 1

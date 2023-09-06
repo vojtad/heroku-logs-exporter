@@ -9,10 +9,10 @@ type HerokuSystemMetrics struct {
 	Metrics []HerokuMetric
 }
 
-func NewHerokuSystemMetrics() *HerokuRouterMetrics {
+func NewHerokuSystemMetrics() *HerokuSystemMetrics {
 	labels := []string{"app_name", "dyno", "error"}
 
-	return &HerokuRouterMetrics{
+	return &HerokuSystemMetrics{
 		[]HerokuMetric{
 			NewHerokuCounterMetric(
 				"error",
